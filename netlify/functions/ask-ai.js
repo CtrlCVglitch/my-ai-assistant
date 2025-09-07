@@ -3,8 +3,8 @@ import fetch from "node-fetch";
 
 export async function handler(event, context) {
   try {
-    const body = JSON.parse(event.body);
-    const question = body.question;
+    const body = event.body ? JSON.parse(event.body) : {};
+    const question = body.question || "Hello";
 
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
@@ -19,9 +19,11 @@ export async function handler(event, context) {
     });
 
     const data = await response.json();
+    const answer = data?.choices?.[0]?.message?.content || "No answer";
+
     return {
       statusCode: 200,
-      body: JSON.stringify({ answer: data.choices[0].message.content })
+      body: JSON.stringify({ answer })
     };
 
   } catch (error) {
