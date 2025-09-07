@@ -19,7 +19,11 @@ export async function handler(event, context) {
     });
 
     const data = await response.json();
-    const answer = data?.choices?.[0]?.message?.content || "No answer";
+
+    // FIX: Make sure we access the right path in the response
+    const answer = data.choices && data.choices[0] && data.choices[0].message
+      ? data.choices[0].message.content
+      : "No answer";
 
     return {
       statusCode: 200,
