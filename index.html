@@ -9,7 +9,7 @@
   <button onclick="askAI()">Ask</button>
   <pre id="answer" style="margin-top: 20px; white-space: pre-wrap;"></pre>
 
- <script>
+<script>
   async function askAI() {
     const question = document.getElementById("question").value;
     document.getElementById("answer").innerText = "Thinking...";
@@ -24,6 +24,7 @@
     document.getElementById("answer").innerText = data.answer || data.error;
   }
 </script>
+
 
 </body>
 </html>
