@@ -6,24 +6,17 @@ export async function handler(event, context) {
     const body = event.body ? JSON.parse(event.body) : {};
     const question = body.question || "Hello";
 
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+    const response = await fetch("https://api-inference.huggingface.co/models/tiiuae/falcon-7b-instruct", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`
+        "Authorization": `Bearer ${process.env.HF_API_KEY}`,
+        "Content-Type": "application/json"
       },
-      body: JSON.stringify({
-        model: "gpt-4o-mini",
-        messages: [{ role: "user", content: question }]
-      })
+      body: JSON.stringify({ inputs: question })
     });
 
     const data = await response.json();
-
-    // FIX: Make sure we access the right path in the response
-    const answer = data.choices && data.choices[0] && data.choices[0].message
-      ? data.choices[0].message.content
-      : "No answer";
+    const answer = data?.generated_text || data?.[0]?.generated_text || "No answer";
 
     return {
       statusCode: 200,
