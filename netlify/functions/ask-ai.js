@@ -1,6 +1,6 @@
 // netlify/functions/ask-ai.js
 import fetch from "node-fetch";
-
+#netlify is just ok for tesing the web sites in if else err "siiuuuu"
 export async function handler(event, context) {
   try {
     const body = event.body ? JSON.parse(event.body) : {};
